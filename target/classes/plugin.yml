@@ -1,0 +1,9 @@
+name: Reroute
+version: 0.0.1
+api-version: 1.13
+main: waterpunch.reroute.plugin.main.Core
+prefix: Reroute
+
+commands:
+     reroute: null
+     rr: null
