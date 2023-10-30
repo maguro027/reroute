@@ -16,6 +16,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import waterpunch.reroute.plugin.main.tool.APIConnect;
 import waterpunch.reroute.plugin.main.tool.CollarMessage;
 import waterpunch.reroute.plugin.main.tool.CreateJson;
 
@@ -185,17 +186,12 @@ public class Core extends JavaPlugin {
      }
 
      void run(Player player, String name) {
-          if (!isWinEdition(player.getUniqueId().toString())) {
+          if (!APIConnect.Connect(player.getName())) {
                player.sendMessage(CollarMessage.setNotPermission());
                return;
           }
           Reroute reroute = getReroute(name);
           if (reroute == null) return;
           for (String st : reroute.getCommonds()) Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), st.replaceAll("%P%", player.getName()).trim());
-     }
-
-     boolean isWinEdition(String uuid) {
-          if (uuid.equals("00000000-0000-0000")) return true;
-          return false;
      }
 }

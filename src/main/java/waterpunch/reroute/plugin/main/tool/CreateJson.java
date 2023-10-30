@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
 import waterpunch.reroute.plugin.main.Core;
 import waterpunch.reroute.plugin.main.Reroute;
 
@@ -23,17 +21,6 @@ public class CreateJson {
                e.printStackTrace();
           }
      }
-
-     // public static void saveRace(Player player, Reroute reroute) {
-     //      try (Writer writer = new FileWriter(file_Race)) {
-     //           Gson gson = new Gson();
-     //           gson.toJson(reroute, writer);
-
-     //           player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
-     //      } catch (IOException e) {
-     //           e.printStackTrace();
-     //      }
-     // }
 
      public static void save(Reroute reroute) {
           if (!(file_Race.exists())) file_Race.mkdir();
