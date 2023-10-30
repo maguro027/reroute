@@ -2,6 +2,7 @@ package waterpunch.reroute.plugin.main;
 
 import java.util.ArrayList;
 import java.util.UUID;
+import waterpunch.reroute.plugin.main.tool.CreateJson;
 
 public class Reroute {
 
@@ -14,6 +15,7 @@ public class Reroute {
      public Reroute(String name) {
           this.Name = name;
           this.ID = UUID.randomUUID();
+          CreateJson.save(this);
      }
 
      public String getName() {
@@ -24,12 +26,17 @@ public class Reroute {
           this.Name = name;
      }
 
-     public UUID getID() {
+     public UUID getUUID() {
           return ID;
+     }
+
+     public void setUUID() {
+          this.ID = UUID.randomUUID();
      }
 
      public void addCommong(String com) {
           Commonds.add(com);
+          CreateJson.save(this);
      }
 
      public ArrayList<String> getCommonds() {
