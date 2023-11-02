@@ -32,7 +32,19 @@ public class Core extends JavaPlugin {
 
      @Override
      public void onDisable() {
-          System.out.println("");
+          System.out.println("Command ReRoute System");
+          /*
+        ■■■■■  ■■■■■■    ■■■■ 
+       ■■   ■   ■    ■  ■   ■ 
+      ■■        ■    ■  ■     
+      ■         ■    ■  ■■    
+      ■         ■   ■    ■■   
+      ■         ■■■■      ■■■ 
+      ■         ■   ■       ■■
+      ■■        ■   ■■       ■
+       ■     ■  ■    ■  ■   ■ 
+        ■■■■■  ■■■   ■■ ■■■■■        
+           */
      }
 
      public static void createfile(String string) {

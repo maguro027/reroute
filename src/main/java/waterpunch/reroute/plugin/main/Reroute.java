@@ -10,8 +10,6 @@ public class Reroute {
      private UUID ID;
      private ArrayList<String> Commonds = new ArrayList<>();
 
-     // private ArrayList<ItemStack> Items = new ArrayList<>();
-
      public Reroute(String name) {
           this.Name = name;
           this.ID = UUID.randomUUID();
