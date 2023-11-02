@@ -16,7 +16,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import waterpunch.reroute.plugin.main.tool.APIConnect;
+import org.geysermc.floodgate.api.FloodgateApi;
 import waterpunch.reroute.plugin.main.tool.CollarMessage;
 import waterpunch.reroute.plugin.main.tool.CreateJson;
 
@@ -150,12 +150,16 @@ public class Core extends JavaPlugin {
 
      void onHelp(Player player) {
           player.sendMessage("----------------------");
-          player.sendMessage("[ " + ChatColor.GREEN + "create" + ChatColor.WHITE + " ] Create Reroute /reroute create [NAME]");
-          player.sendMessage("[ " + ChatColor.GREEN + "list" + ChatColor.WHITE + " ] View Reroute list");
-          player.sendMessage("[ " + ChatColor.GREEN + "view" + ChatColor.WHITE + " ] View reroute");
-          player.sendMessage("[ " + ChatColor.GREEN + "addcommand" + ChatColor.WHITE + " ] AddCommand /reroute addcommand [NAME] [Command] %P% = Player");
-          player.sendMessage("[ " + ChatColor.GREEN + "run" + ChatColor.WHITE + " ] Run Commands /reroute run [NAME]");
+          player.sendMessage(setHelp("create") + "Create Reroute /reroute create [NAME]");
+          player.sendMessage(setHelp("list") + "View Reroute list");
+          player.sendMessage(setHelp("view") + "View reroute");
+          player.sendMessage(setHelp("addcommand") + "AddCommand /reroute addcommand [NAME] [Command] %P% = Player");
+          player.sendMessage(setHelp("run") + "Run Commands /reroute run [NAME]");
           player.sendMessage("----------------------");
+     }
+
+     String setHelp(String name) {
+          return "[ " + ChatColor.GREEN + name + ChatColor.WHITE + " ] ";
      }
 
      void onCreate(Player player, String name) {
@@ -167,10 +171,6 @@ public class Core extends JavaPlugin {
           Reroutes.add(reroute);
           player.sendMessage("Create Reroute !");
      }
-
-     void onItemEdit(Player player, String name) {}
-
-     void onCommondedit(Player player, String name) {}
 
      void onList(Player player) {
           if (Reroutes.size() == 0) return;
@@ -186,7 +186,7 @@ public class Core extends JavaPlugin {
      }
 
      void run(Player player, String name) {
-          if (!APIConnect.Connect(player.getName())) {
+          if (!FloodgateApi.getInstance().isFloodgatePlayer(player.getUniqueId())) {
                player.sendMessage(CollarMessage.setNotPermission());
                return;
           }
