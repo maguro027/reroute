@@ -16,7 +16,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.geysermc.floodgate.api.FloodgateApi;
 import waterpunch.reroute.plugin.main.tool.CollarMessage;
 import waterpunch.reroute.plugin.main.tool.CreateJson;
 
@@ -36,7 +35,6 @@ public class Core extends JavaPlugin {
           /*
         ■■■■■  ■■■■■■    ■■■■ 
        ■■   ■   ■    ■  ■   ■ 
-      ■■        ■    ■  ■     
       ■         ■    ■  ■■    
       ■         ■   ■    ■■   
       ■         ■■■■      ■■■ 
@@ -198,7 +196,7 @@ public class Core extends JavaPlugin {
      }
 
      void run(Player player, String name) {
-          if (!FloodgateApi.getInstance().isFloodgatePlayer(player.getUniqueId())) {
+          if (player.getDisplayName().indexOf(".") == -1) {
                player.sendMessage(CollarMessage.setNotPermission());
                return;
           }

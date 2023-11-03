@@ -17,7 +17,7 @@ public class CollarMessage {
      }
 
      public static String setNotPermission() {
-          return setWarning() + "You Don't have Permission";
+          return setWarning() + "このコマンドは統合版専用です";
      }
 
      public static String setNotFound() {
