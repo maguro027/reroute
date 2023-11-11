@@ -26,24 +26,24 @@ public class Core extends JavaPlugin {
 
      @Override
      public void onEnable() {
+          System.out.println("Command ReRoute System");
           getReroutes();
+          /*
+             ■■■■■  ■■■■■■    ■■■■ 
+            ■■   ■   ■    ■  ■   ■ 
+           ■         ■    ■  ■■    
+           ■         ■   ■    ■■   
+           ■         ■■■■      ■■■ 
+           ■         ■   ■       ■■
+           ■■        ■   ■■       ■
+            ■     ■  ■    ■  ■   ■ 
+             ■■■■■  ■■■   ■■ ■■■■■        
+           */
+
      }
 
      @Override
-     public void onDisable() {
-          System.out.println("Command ReRoute System");
-          /*
-        ■■■■■  ■■■■■■    ■■■■ 
-       ■■   ■   ■    ■  ■   ■ 
-      ■         ■    ■  ■■    
-      ■         ■   ■    ■■   
-      ■         ■■■■      ■■■ 
-      ■         ■   ■       ■■
-      ■■        ■   ■■       ■
-       ■     ■  ■    ■  ■   ■ 
-        ■■■■■  ■■■   ■■ ■■■■■        
-           */
-     }
+     public void onDisable() {}
 
      public static void createfile(String string) {
           try {
@@ -75,46 +75,44 @@ public class Core extends JavaPlugin {
 
      @Override
      public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-          if (!(sender instanceof Player)) return false;
-          Player player = (Player) sender;
           if (args.length == 0) {
-               onHelp(player);
+               onHelp(sender);
                return true;
           }
           Reroute reroute = null;
           switch (args[0]) {
                case "help":
-                    onHelp(player);
+                    onHelp(sender);
                     break;
                case "list":
-                    onList(player);
+                    onList(sender);
                     break;
                case "view":
                     if (args.length == 1) {
-                         player.sendMessage(CollarMessage.setWarning() + "Need Name");
+                         sender.sendMessage(CollarMessage.setWarning() + "Need Name");
                          return false;
                     }
                     onView((Player) sender, args[1]);
 
                     break;
                case "create":
-                    if (!player.isOp()) {
-                         player.sendMessage(CollarMessage.setNotPermission());
+                    if (sender instanceof Player) if (!((Player) sender).isOp()) {
+                         sender.sendMessage(CollarMessage.setNotPermission());
                          return false;
                     }
                     if (args.length == 1) {
-                         player.sendMessage(CollarMessage.setWarning() + "Need Name");
+                         sender.sendMessage(CollarMessage.setWarning() + "Need Name");
                          return false;
                     }
                     onCreate((Player) sender, args[1]);
                     break;
                case "addcommand":
-                    if (!player.isOp()) {
-                         player.sendMessage(CollarMessage.setNotPermission());
+                    if (sender instanceof Player) if (!((Player) sender).isOp()) {
+                         sender.sendMessage(CollarMessage.setNotPermission());
                          return false;
                     }
                     if (args.length == 1) {
-                         player.sendMessage(CollarMessage.setWarning() + "Need Name");
+                         sender.sendMessage(CollarMessage.setWarning() + "Need Name");
                          return false;
                     }
                     reroute = getReroute(args[1]);
@@ -125,15 +123,19 @@ public class Core extends JavaPlugin {
                     String com = "";
                     for (int i = 2; i < args.length; i++) com = com + " " + args[i];
 
-                    player.sendMessage(reroute.getName() + " add " + com);
+                    sender.sendMessage(reroute.getName() + " add " + com);
                     reroute.addCommong(com);
                     break;
                case "run":
-                    if (args.length == 1) {
-                         player.sendMessage(CollarMessage.setWarning() + "Need Name");
+                    if (!(sender instanceof Player)) {
+                         sender.sendMessage(CollarMessage.setWarning() + "Sorry this command is Player only!!");
                          return false;
                     }
-                    run(player, args[1]);
+                    if (args.length == 1) {
+                         ((Player) sender).sendMessage(CollarMessage.setWarning() + "Need Name");
+                         return false;
+                    }
+                    run((Player) sender, args[1]);
                     break;
           }
           return false;
@@ -158,14 +160,14 @@ public class Core extends JavaPlugin {
           return null;
      }
 
-     void onHelp(Player player) {
-          player.sendMessage("----------------------");
-          player.sendMessage(setHelp("create") + "Create Reroute /reroute create [NAME]");
-          player.sendMessage(setHelp("list") + "View Reroute list");
-          player.sendMessage(setHelp("view") + "View reroute");
-          player.sendMessage(setHelp("addcommand") + "AddCommand /reroute addcommand [NAME] [Command] %P% = Player");
-          player.sendMessage(setHelp("run") + "Run Commands /reroute run [NAME]");
-          player.sendMessage("----------------------");
+     void onHelp(CommandSender sender) {
+          sender.sendMessage("----------------------");
+          sender.sendMessage(setHelp("create") + "Create Reroute /reroute create [NAME]");
+          sender.sendMessage(setHelp("list") + "View Reroute list");
+          sender.sendMessage(setHelp("view") + "View reroute");
+          sender.sendMessage(setHelp("addcommand") + "AddCommand /reroute addcommand [NAME] [Command] %P% = Player");
+          sender.sendMessage(setHelp("run") + "Run Commands /reroute run [NAME]");
+          sender.sendMessage("----------------------");
      }
 
      String setHelp(String name) {
@@ -182,26 +184,45 @@ public class Core extends JavaPlugin {
           player.sendMessage("Create Reroute !");
      }
 
-     void onList(Player player) {
-          if (Reroutes.size() == 0) return;
-          for (Reroute r : Reroutes) player.sendMessage(r.getName());
+     void onList(CommandSender sender) {
+          if (Reroutes.size() == 0) {
+               sender.sendMessage("-- 0 --");
+               return;
+          }
+          for (Reroute r : Reroutes) sender.sendMessage(r.getName());
      }
 
      void onView(Player player, String name) {
           Reroute reroute = getReroute(name);
-          if (reroute == null) return;
+          if (reroute == null) {
+               player.sendMessage("Unknow Reroute");
+               return;
+          }
           player.sendMessage(ChatColor.RED + name);
           player.sendMessage(ChatColor.GREEN + "[ COMMOND ]");
           for (String st : reroute.getCommonds()) player.sendMessage(ChatColor.GREEN + " - " + ChatColor.WHITE + st.replaceAll("%P%", ChatColor.GREEN + " [Player] " + ChatColor.WHITE).trim());
      }
 
      void run(Player player, String name) {
-          if (player.getDisplayName().indexOf(".") == -1) {
-               player.sendMessage(CollarMessage.setNotPermission());
+          if (player.getName().indexOf(".") == -1) return;
+
+          player.sendMessage("!test!");
+          Reroute reroute = getReroute(name);
+          if (reroute == null) {
+               player.sendMessage("Unknow Reroute");
                return;
           }
-          Reroute reroute = getReroute(name);
-          if (reroute == null) return;
-          for (String st : reroute.getCommonds()) Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), st.replaceAll("%P%", player.getName()).trim());
+          player.sendMessage("-test-");
+
+          String P = player.getName();
+          String N = player.getName();
+          N = N.substring(1);
+
+          for (String st : reroute.getCommonds()) {
+               st = st.replaceAll("%P%", P);
+               st = st.replaceAll("%N%", N);
+               st = st.trim();
+               Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), st);
+          }
      }
 }
