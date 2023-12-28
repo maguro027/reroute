@@ -205,14 +205,11 @@ public class Core extends JavaPlugin {
 
      void run(Player player, String name) {
           if (player.getName().indexOf(".") == -1) return;
-
-          player.sendMessage("!test!");
           Reroute reroute = getReroute(name);
           if (reroute == null) {
                player.sendMessage("Unknow Reroute");
                return;
           }
-          player.sendMessage("-test-");
 
           String P = player.getName();
           String N = player.getName();
